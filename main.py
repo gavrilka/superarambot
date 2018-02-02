@@ -16,7 +16,7 @@ server = Flask(__name__)
 def start(message):
     bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 
-@server.route("/bot", methods=['POST'])
+@server.route('/' + token, methods=["POST"])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
@@ -24,7 +24,7 @@ def getMessage():
 @server.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url="https://superarambot2.herokuapp.com/bot")
+    bot.set_webhook(url="https://superarambot2.herokuapp.com/' + token)
     return "!", 200
 
 server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
