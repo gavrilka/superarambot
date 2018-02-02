@@ -1,31 +1,20 @@
 # -*- coding: utf-8 -*-
+import os
 import telebot
 import requests
 import time
-import os
+import random
 
-from flask import Flask, request
+TOKEN = "495756900:AAGvm2io0-UCK4nopKkLCuPgLXXMqV3H2Xs"
+PORT = int(os.environ.get('PORT', '8443'))
+updater = Updater(TOKEN)
+# add handlers
+updater.start_webhook(listen="0.0.0.0",
+                      port=PORT,
+                      url_path=TOKEN)
+updater.bot.set_webhook("https://superarambot2.herokuapp.com/" + TOKEN)
+updater.idle()
 
-token = os.environ['TELEGRAM_TOKEN']
-
-bot = telebot.TeleBot(token, threaded=False)
-
-server = Flask(__name__)
-
-@bot.message_handler(commands=['start'])
-def start(message):
-    bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
-
-@server.route('/' + token, methods=["POST"])
-def getMessage():
-    bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
-    return "!", 200
-
-@server.route("/")
-def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url='https://superaramwebhook.herokuapp.com' + '/' + token)
-    return "!", 200
-
-server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
-server = Flask(__name__)
+@bot.message_handler(commands=['help'])
+def helpCommand(message):
+    bot.send_message(message.chat.id, 'Привет *' + message.from_user.first_name + '*!', parse_mode='Markdown')
