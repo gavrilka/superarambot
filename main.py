@@ -12,7 +12,7 @@ updater = Updater(TOKEN)
 updater.start_webhook(listen="0.0.0.0",
                       port=PORT,
                       url_path=TOKEN)
-updater.bot.set_webhook("https://superarambot2.herokuapp.com/" + TOKEN)
+updater.bot.set_webhook("https://superaramwebhook.herokuapp.com/" + TOKEN)
 updater.idle()
 
 @bot.message_handler(commands=['help'])
